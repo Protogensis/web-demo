@@ -1,12 +1,23 @@
 import data from './json/test.json'
 console.log(data)
-let result = new String('<main>')
-for (const item of data.sites) {
-    let name = item.name
-    let url = item.url
-    let temp = '<p>name:'+name+' '+'url:'+url+'</p>'
-    result = result + temp
-}
-result = result + '</main>'
+let result = '<main>'
 
-document.body.innerHTML = result+''
+result = result + '<table>'
+result = result+'<tr><th>name</th><th>url</th></tr>'
+
+
+for (let item of data.sites) {
+    result = result+'<tr>'
+    result = result+'<td>'
+    result = result+item.name
+    result = result+'</td>'
+    result = result+'<td>'
+    result = result+item.url
+    result = result+'</td>'
+    result = result+'</tr>'
+}
+
+result = result+'</table>'
+result = result+'</main>'
+
+document.body.innerHTML =result

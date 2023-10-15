@@ -1,6 +1,10 @@
 window.addEventListener('hashchange',onHashChange)
 
 const iframe = document.querySelector('iframe')
+if(!iframe)
+    throw new Error('not found iframe')
+iframe.src = '../views/' + 'helloweb' + '.html'
+
 
 // 为列表每个元素创建切换事件
 const samples = document.querySelectorAll('.sample')
