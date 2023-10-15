@@ -12,7 +12,9 @@ for (let item of data.sites) {
     result = result+item.name
     result = result+'</td>'
     result = result+'<td>'
+    result = result+'<a href="' + item.url +'" target="_blank">'
     result = result+item.url
+    result = result+'</a>'
     result = result+'</td>'
     result = result+'</tr>'
 }

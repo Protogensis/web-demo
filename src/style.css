@@ -20,23 +20,39 @@ aside{
   justify-content: left;
 }
 
+hr{
+  position: relative;
+  width: 3px;
+  height: 98%;
+  border: none;
+  background-color: rgb(192, 192, 192);
+}
+
 
 iframe{
   box-sizing: border-box;
   border: none;
   width: 100vw;
   height: 100vh;
+  margin: 50px;
 }
 
 a{
   text-decoration: none;
-  background-color: cadetblue;
+  border-radius: 10px;
   margin: 10px 10px 5px 10px;
   padding: 10px;
 }
 
+a:hover{
+  background-color:rgb(219, 219, 219);
+}
+
 .sample.active{
-  color: red;
+  background-color: teal;
+  font-size: large;
+  font-weight: bold;
+  color: white;
 }
 
 a:visited{
