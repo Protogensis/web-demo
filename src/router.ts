@@ -1,4 +1,5 @@
 window.addEventListener('hashchange',onHashChange)
+window.addEventListener('DOMContentLoaded',onHashChange)
 
 const iframe = document.querySelector('iframe')
 if(!iframe)
@@ -23,6 +24,20 @@ for(let sample of samples){
 // 路由变化时，根据路由渲染对应 UI
 function onHashChange () {
     console.log(location.hash)
+
+    const samples = document.querySelectorAll('.sample')
+    for(let sample of samples){
+        let a = sample as HTMLAnchorElement
+        if(a.href.split('#')[1] === location.hash.split('#')[1] ){
+            const active = document.querySelector('.active')
+        if(!active)
+            throw new Error()
+            active.classList.remove('active')
+            sample.classList.add('active')
+        }
+            
+
+    }
     
 
     if(!iframe)
