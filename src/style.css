@@ -46,6 +46,10 @@ a{
 
 }
 
+a:link{
+  color: black;
+}
+
 a:hover{
   background-color:rgb(219, 219, 219);
 }
