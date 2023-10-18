@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>图标发光特效</title>
     <style>
         *{
             margin: 0;
@@ -17,7 +17,7 @@
             justify-content: center;
             align-items: center;
             box-sizing: border-box;
-            background-color: black;
+            background-color: white;
         }
 
         .svgcontent{
@@ -31,21 +31,20 @@
             content: '';
             display: block;
             position: absolute;
-            background-color: rgb(175, 70, 70);
+            background-color: white;
             overflow: hidden;
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            z-index: -1;
-            transform: scale(0.8);
-            transition: all 0.8s;
-            
+            z-index: -1; 
+            transition: all 0.8s linear;
         }
 
+       
+
         .svgcontent:hover::before{
-            
-            transform: scale(1.1);
-            transition: all 0.8s;
+            box-shadow: 0 0 50px red;
+            transition: all 0.8s linear;
         }
     </style>
 </head>
