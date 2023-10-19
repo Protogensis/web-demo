@@ -1,39 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <button id="ajaxButton" type="button">发送请求</button>
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>XHR 时间记录</title>
+    <style></style>
+  </head>
+  <body>
+    <p id="writeData" class="data">离线</p>
+    <p id="lastStamp">还没有数据</p>
 
     <script>
-        () => {
-    let httpRequest;
-    document
-      .getElementById("ajaxButton")
-      .addEventListener("click", makeRequest);
-    function makeRequest() {
-      httpRequest = new XMLHttpRequest();
-      if (!httpRequest) {
-        alert("放弃了 :( 不能创建 XMLHTTP 实例");
-        return false;
+      const fullData = document.getElementById("writeData");
+      const lastData = document.getElementById("lastStamp");
+      function fetchData() {
+        console.log("正在获取数据更新。");
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "time-log.txt", true);
+        xhr.onload = () => {
+          updateDisplay(xhr.response);
+        };
+        xhr.send();
       }
-      httpRequest.onreadystatechange = alertContents;
-      httpRequest.open("GET", "test.html");
-      httpRequest.send();
-    }
-    function alertContents() {
-      if (httpRequest.readyState === XMLHttpRequest.DONE) {
-        if (httpRequest.status === 200) {
-          alert(httpRequest.responseText);
-        } else {
-          alert("请求遇到了问题。");
+      function updateDisplay(text) {
+        fullData.textContent = text;
+        const timeArray = text.split("\n");
+        // 有些文件系统总是在文本文件的末尾包括一个空行。
+        if (timeArray[timeArray.length - 1] === "") {
+          timeArray.pop();
         }
+        lastData.textContent = timeArray[timeArray.length - 1];
       }
-    }
-  };
+      setInterval(fetchData, 5000);
     </script>
-</body>
+  </body>
 </html>
