@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="ajaxButton" type="button">发送请求</button>
+
+    <script>
+        () => {
+    let httpRequest;
+    document
+      .getElementById("ajaxButton")
+      .addEventListener("click", makeRequest);
+    function makeRequest() {
+      httpRequest = new XMLHttpRequest();
+      if (!httpRequest) {
+        alert("放弃了 :( 不能创建 XMLHTTP 实例");
+        return false;
+      }
+      httpRequest.onreadystatechange = alertContents;
+      httpRequest.open("GET", "test.html");
+      httpRequest.send();
+    }
+    function alertContents() {
+      if (httpRequest.readyState === XMLHttpRequest.DONE) {
+        if (httpRequest.status === 200) {
+          alert(httpRequest.responseText);
+        } else {
+          alert("请求遇到了问题。");
+        }
+      }
+    }
+  };
+    </script>
+</body>
+</html>
