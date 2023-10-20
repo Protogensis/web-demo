@@ -1,8 +1,6 @@
-{
-    "sites": [
+
     { "name":"菜鸟教程" , "url":"http://www.runoob.com" }, 
     { "name":"google" , "url":"http://www.google.com" }, 
     { "name":"微博" , "url":"http://www.weibo.com" },
     {"name":"bilibili","url":"http://www.bilibili.com"}
-    ]
-}
+
