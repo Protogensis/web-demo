@@ -84,6 +84,12 @@ a:hover{
   transition: all 0.6s linear;
 }
 
+
+.otherside{
+  display: flex;
+  flex-direction: column;
+}
+
 a:visited{
   color: black;
 }
