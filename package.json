@@ -13,6 +13,7 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "mongoose": "^7.6.3"
+    "mongoose": "^7.6.3",
+    "yarn": "^1.22.19"
   }
 }
