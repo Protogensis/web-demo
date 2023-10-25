@@ -9,11 +9,15 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/three": "^0.157.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   },
   "dependencies": {
     "mongoose": "^7.6.3",
+    "openbim-components": "^1.1.5",
+    "three": "^0.157.0",
+    "web-ifc": "^0.0.44",
     "yarn": "^1.22.19"
   }
 }
