@@ -1,91 +1,68 @@
 import * as THREE from "three";
 
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+function initThree() {
+  const canvas = document.getElementById("three") as HTMLCanvasElement;
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true, //  打开抗锯齿
+  });
 
-let camera: THREE.Camera | null = null;
-let scene: THREE.Scene | null = null,
-  renderer: THREE.WebGLRenderer | undefined,
-  controls: OrbitControls;
+  const scene = new THREE.Scene();
 
-init();
-animate();
+  return { canvas, scene, renderer };
+}
 
-function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
-  camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    20
+function initCamera(canvas: HTMLCanvasElement) {
+  //摄像机
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    canvas.clientWidth / canvas.clientHeight,
+    0.5,
+    100
   );
-  camera.position.set(-0.75, 0.7, 1.25);
 
-  scene = new THREE.Scene();
-  if (!scene) throw new Error();
-
-  // model
-
-  new GLTFLoader()
-    .setPath("/public/models/gltf/") //根目录下的public
-    .load("SheenChair.glb", function (gltf) {
-      console.log(gltf);
-      if (!scene) throw new Error();
-      scene.add(gltf.scene);
-
-      const object = gltf.scene.getObjectByName("SheenChair_fabric");
-
-      const gui = new GUI();
-
-      gui.add(object.material, "sheen", 0, 1);
-      gui.open();
-    });
-
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
-  container.appendChild(renderer.domElement);
-
-  const environment = new RoomEnvironment(renderer);
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
-  scene.background = new THREE.Color(0xbbbbbb);
-  scene.environment = pmremGenerator.fromScene(environment).texture;
-
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.minDistance = 1;
-  controls.maxDistance = 10;
-  controls.target.set(0, 0.35, 0);
-  controls.update();
-
-  window.addEventListener("resize", onWindowResize);
+  camera.position.z = 2;
+  return camera;
 }
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+function initGeometry() {
+  //几何图元
+  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const material = new THREE.MeshBasicMaterial({ color: 0x44aa88 });
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  const cube = new THREE.Mesh(geometry, material);
+  return cube;
 }
 
-//
 
-function animate() {
-  requestAnimationFrame(animate);
 
-  controls.update(); // required if damping enabled
+function run() {
+  const { canvas, scene, renderer } = initThree();
+  const camera = initCamera(canvas);
+  const cube = initGeometry();
+  scene.add(camera)
+  scene.add(cube);
 
-  render();
-}
+  function render( time ) {
 
-function render() {
+    time *= 0.001; // convert time to seconds
+  
+    cube.rotation.x = time;
+    cube.rotation.y = time;
+  
+    renderer.render( scene, camera );
+  
+    requestAnimationFrame( render );
+  
+  }
+  requestAnimationFrame(render)
+
   renderer.render(scene, camera);
+  window.addEventListener("resize", () => {
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    renderer.render(scene, camera);
+  });
 }
+
+run();
