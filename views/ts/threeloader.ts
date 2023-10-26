@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 function initThree() {
   const canvas = document.getElementById("three") as HTMLCanvasElement;
@@ -8,24 +7,21 @@ function initThree() {
     canvas,
     antialias: true, //  打开抗锯齿
   });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xbbbbbb);
 
   return { canvas, scene, renderer };
 }
 //摄像机
-function initCamera() {
+function initCamera(canvas: HTMLCanvasElement) {
   const camera = new THREE.PerspectiveCamera(
-    100,
-    window.innerWidth / window.innerHeight,
+    75,
+    canvas.clientWidth / canvas.clientHeight,
     0.5,
-    1000
+    100
   );
 
-  camera.position.set(1, 1, 1);
+  camera.position.z = 2;
   return camera;
 }
 
@@ -40,66 +36,40 @@ function initLight() {
 
 //几何图元
 function initGeometry() {
-  const boxgeometry = new THREE.BoxGeometry();
-  
-  const boxmaterial = new THREE.MeshToonMaterial({
+  const geometry = new THREE.DodecahedronGeometry(1,5);
+  const material = new THREE.MeshToonMaterial({
     color: 0x44aa88,
   });
-  const planegeo = new THREE.PlaneGeometry(200, 100);
-  const planematerial = new THREE.MeshToonMaterial({
-    color: 0xEEC900,
-  });
-  const cube = new THREE.Mesh(boxgeometry, boxmaterial);
-  const plane = new THREE.Mesh(planegeo, planematerial);
-  cube.translateY(0.5)
-  plane.rotateX(-Math.PI/2)
 
-  return { cube, plane };
-}
-
-function initControl(
-  camera: THREE.PerspectiveCamera,
-  renderer: THREE.WebGLRenderer
-) {
-  let control = new OrbitControls(camera, renderer.domElement);
-  control.enableDamping = true;
-  control.minDistance = 1.4;
-  control.maxDistance = 4;
-  control.target.set(0, 0.35, 0);
-  control.update();
-  return control;
+  const cube = new THREE.Mesh(geometry, material);
+  return cube;
 }
 
 function run() {
   const { canvas, scene, renderer } = initThree();
-  const camera = initCamera();
+  const camera = initCamera(canvas);
   const light = initLight();
-  const { cube, plane } = initGeometry();
-  const control = initControl(camera, renderer);
+  const cube = initGeometry();
   scene.add(camera);
   scene.add(light);
   scene.add(cube);
-  scene.add(plane);
 
-  animate();
+  function render(time: number) {
+    time *= 0.001; // convert time to seconds
 
-  function animate() {
-    requestAnimationFrame(animate);
+    cube.rotation.x = time;
+    cube.rotation.y = time;
 
-    control.update(); // required if damping enabled
-
-    render();
-  }
-
-  function render() {
     renderer.render(scene, camera);
+
+    requestAnimationFrame(render);
   }
+  requestAnimationFrame(render);
 
+  renderer.render(scene, camera);
   window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = canvas.clientWidth / canvas.clientHeight;
+    renderer.render(scene, camera);
   });
 }
 
