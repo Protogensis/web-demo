@@ -1,91 +1,106 @@
 import * as THREE from "three";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+function initThree() {
+  const canvas = document.getElementById("three") as HTMLCanvasElement;
 
-let camera: THREE.Camera | null = null;
-let scene: THREE.Scene | null = null,
-  renderer: THREE.WebGLRenderer | undefined,
-  controls: OrbitControls;
-
-init();
-animate();
-
-function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
-  camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    20
-  );
-  camera.position.set(-0.75, 0.7, 1.25);
-
-  scene = new THREE.Scene();
-  if (!scene) throw new Error();
-
-  // model
-
-  new GLTFLoader()
-    .setPath("/public/models/gltf/") //根目录下的public
-    .load("SheenChair.glb", function (gltf) {
-      console.log(gltf);
-      if (!scene) throw new Error();
-      scene.add(gltf.scene);
-
-      const object = gltf.scene.getObjectByName("SheenChair_fabric");
-
-      const gui = new GUI();
-
-      gui.add(object.material, "sheen", 0, 1);
-      gui.open();
-    });
-
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    antialias: true, //  打开抗锯齿
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
-  container.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment(renderer);
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
-
+  const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xbbbbbb);
-  scene.environment = pmremGenerator.fromScene(environment).texture;
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.minDistance = 1;
-  controls.maxDistance = 10;
-  controls.target.set(0, 0.35, 0);
-  controls.update();
+  return { canvas, scene, renderer };
+}
+//摄像机
+function initCamera() {
+  const camera = new THREE.PerspectiveCamera(
+    100,
+    window.innerWidth / window.innerHeight,
+    0.5,
+    1000
+  );
 
-  window.addEventListener("resize", onWindowResize);
+  camera.position.set(1, 1, 1);
+  return camera;
 }
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(window.innerWidth, window.innerHeight);
+//灯光
+function initLight() {
+  const color = 0xffffff;
+  const intensity = 3;
+  const light = new THREE.DirectionalLight(color, intensity);
+  light.position.set(-1, 2, 4);
+  return light;
 }
 
-//
+//几何图元
+function initGeometry() {
+  const boxgeometry = new THREE.BoxGeometry();
+  
+  const boxmaterial = new THREE.MeshToonMaterial({
+    color: 0x44aa88,
+  });
+  const planegeo = new THREE.PlaneGeometry(200, 100);
+  const planematerial = new THREE.MeshToonMaterial({
+    color: 0xEEC900,
+  });
+  const cube = new THREE.Mesh(boxgeometry, boxmaterial);
+  const plane = new THREE.Mesh(planegeo, planematerial);
+  cube.translateY(0.5)
+  plane.rotateX(-Math.PI/2)
 
-function animate() {
-  requestAnimationFrame(animate);
-
-  controls.update(); // required if damping enabled
-
-  render();
+  return { cube, plane };
 }
 
-function render() {
-  renderer.render(scene, camera);
+function initControl(
+  camera: THREE.PerspectiveCamera,
+  renderer: THREE.WebGLRenderer
+) {
+  let control = new OrbitControls(camera, renderer.domElement);
+  control.enableDamping = true;
+  control.minDistance = 1.4;
+  control.maxDistance = 4;
+  control.target.set(0, 0.35, 0);
+  control.update();
+  return control;
 }
+
+function run() {
+  const { canvas, scene, renderer } = initThree();
+  const camera = initCamera();
+  const light = initLight();
+  const { cube, plane } = initGeometry();
+  const control = initControl(camera, renderer);
+  scene.add(camera);
+  scene.add(light);
+  scene.add(cube);
+  scene.add(plane);
+
+  animate();
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    control.update(); // required if damping enabled
+
+    render();
+  }
+
+  function render() {
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+
+run();

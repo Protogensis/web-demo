@@ -1081,10 +1081,22 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
+three-addons@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/three-addons/-/three-addons-1.2.0.tgz"
+  integrity sha512-tmPGLtcsDb0Bt6bVU82y9KX0rdAzizr7t2rFjBecWq4pvfGMY3l+yCfvntGYeZGJ9cjsli10cHSWHsN1pTy4mA==
+  dependencies:
+    three "^0.92.0"
+
 three-mesh-bvh@0.6.0:
   version "0.6.0"
   resolved "https://registry.npmjs.org/three-mesh-bvh/-/three-mesh-bvh-0.6.0.tgz"
   integrity sha512-4/oXeqVMLuN9/P0M3L5ezIVrFiXQXKvjVTErkiSYMjSaPoWfNPAwqulSgLf4bIUPn8/Lq3rmIJwxbCuD8qDobA==
+
+three@^0.157.0, "three@>= 0.138.0 < 0.158.0", "three@>= 0.151.0", three@>=0.126.1, three@>=0.137:
+  version "0.157.0"
+  resolved "https://registry.npmjs.org/three/-/three-0.157.0.tgz"
+  integrity sha512-CeAwQrf4x3z0/e+MC4F+nXLW5t0gh3pw+L6CCBqpHvOq3bGYIgRYub7Pv0j/9wR+d++OiEglyZzWyuSYbwWGOA==
 
 three@0.152.2:
   version "0.152.2"
