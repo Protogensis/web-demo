@@ -41,20 +41,28 @@ function initLight() {
 //几何图元
 function initGeometry() {
   const boxgeometry = new THREE.BoxGeometry();
+  const planegeo = new THREE.PlaneGeometry(200, 100);
+  const sgeo = new THREE.SphereGeometry()
   
   const boxmaterial = new THREE.MeshToonMaterial({
     color: 0x44aa88,
   });
-  const planegeo = new THREE.PlaneGeometry(200, 100);
   const planematerial = new THREE.MeshToonMaterial({
     color: 0xEEC900,
   });
+
   const cube = new THREE.Mesh(boxgeometry, boxmaterial);
   const plane = new THREE.Mesh(planegeo, planematerial);
+  const sphere = new THREE.Mesh(sgeo,boxmaterial)
+
   cube.translateY(0.5)
   plane.rotateX(-Math.PI/2)
+  sphere.translateX(-3)
+  sphere.translateY(1)
 
-  return { cube, plane };
+  const meshs = { cube, plane,sphere }
+
+  return meshs;
 }
 
 function initControl(
@@ -74,12 +82,13 @@ function run() {
   const { canvas, scene, renderer } = initThree();
   const camera = initCamera();
   const light = initLight();
-  const { cube, plane } = initGeometry();
+  const { cube, plane,sphere } = initGeometry();
   const control = initControl(camera, renderer);
   scene.add(camera);
   scene.add(light);
   scene.add(cube);
   scene.add(plane);
+  scene.add(sphere)
 
   animate();
 
