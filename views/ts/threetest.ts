@@ -25,19 +25,21 @@ function initCamera(canvas: HTMLCanvasElement) {
   return camera;
 }
 
-//dengguang
-function initLight(){
-  const color = 0xFFFFFF;
+//灯光
+function initLight() {
+  const color = 0xffffff;
   const intensity = 3;
   const light = new THREE.DirectionalLight(color, intensity);
   light.position.set(-1, 2, 4);
-  return light
+  return light;
 }
 
+//几何图元
 function initGeometry() {
-  //几何图元
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshPhongMaterial({ color: 0x44aa88 });
+  const geometry = new THREE.DodecahedronGeometry(1,5);
+  const material = new THREE.MeshToonMaterial({
+    color: 0x44aa88,
+  });
 
   const cube = new THREE.Mesh(geometry, material);
   return cube;
@@ -46,10 +48,10 @@ function initGeometry() {
 function run() {
   const { canvas, scene, renderer } = initThree();
   const camera = initCamera(canvas);
-  const light = initLight()
+  const light = initLight();
   const cube = initGeometry();
   scene.add(camera);
-  scene.add(light)
+  scene.add(light);
   scene.add(cube);
 
   function render(time: number) {
