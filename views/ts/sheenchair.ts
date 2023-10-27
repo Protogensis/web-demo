@@ -32,9 +32,10 @@ function init() {
       scene.add(gltf.scene);
 
       const object = gltf.scene.getObjectByName("SheenChair_fabric");
+      console.log(gltf)
 
       const gui = new GUI();
-
+      object.material.sheen = 0
       gui.add(object.material, "sheen", 0, 1);
       gui.open();
     });
