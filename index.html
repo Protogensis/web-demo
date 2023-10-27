@@ -1,45 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Demo</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <link rel="stylesheet" href="/src/style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web Demo</title>
-</head>
+  <body>
+    <aside>
+      <a class="sample active" href="#helloweb">HelloWeb</a>
+      <a class="sample" href="#xhxtx">下划线特效</a>
+      <a class="sample" href="#dzjtx">打字机特效</a>
+      <a class="sample" href="#tbfgtx">图标发光特效</a>
+      <a class="sample" href="#tpkp">躺平卡片</a>
 
-<body>
-  <aside>
-    <a class="sample active" href="#helloweb">HelloWeb</a>
-    <a class="sample" href="#xhxtx">下划线特效</a>
-    <a class="sample" href="#dzjtx">打字机特效</a>
-    <a class="sample" href="#tbfgtx">图标发光特效</a>
-    <a class="sample" href="#tpkp">躺平卡片</a>
-
-    <h1>Three.js</h1>
-    <a class="sample" href="#ifcloader">ifc加载器</a>
-    <a class="sample" href="#threetest">threetest</a>
+      <h1>Three.js</h1>
+      <a class="sample" href="#ifcloader">ifc加载器</a>
+      <a class="sample" href="#threetest">threetest</a>
       <a class="sample" href="#sheenchair">threejs-椅子</a>
-    <h1>
-      from CSS灵感
-    </h1>
-    <a class="sample" href="#nhdzt">霓虹灯字体</a>
-    <h1>CSS友情连接</h1>
-    <div class="otherside">
-      <a class="other" href="https://codepen.io/" target="_blank" rel="noopener noreferrer">code pen</a>
-      <a class="other" href="https://chokcoco.github.io/CSS-Inspiration/#/" target="_blank"
-        rel="noopener noreferrer">CSS灵感</a>
-      <a class="other" href="https://juejin.cn/post/6921481535774261261" target="_blank"
-        rel="noopener noreferrer">132个CSS特效</a>
+      <a class="sample" href="#revitgltf">revitgltf</a>
+      <h1>from CSS灵感</h1>
+      <a class="sample" href="#nhdzt">霓虹灯字体</a>
+      <h1>CSS友情连接</h1>
+      <div class="otherside">
+        <a
+          class="other"
+          href="https://codepen.io/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >code pen</a
+        >
+        <a
+          class="other"
+          href="https://chokcoco.github.io/CSS-Inspiration/#/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >CSS灵感</a
+        >
+        <a
+          class="other"
+          href="https://juejin.cn/post/6921481535774261261"
+          target="_blank"
+          rel="noopener noreferrer"
+          >132个CSS特效</a
+        >
+      </div>
+    </aside>
+    <hr />
+    <div class="content">
+      <iframe id="iframe"></iframe>
     </div>
-  </aside>
-  <hr>
-  <div class="content">
-    <iframe id="iframe"></iframe>
-  </div>
-  <script type="module" src="/src/main.ts"></script>
-  <script type="module" src="src/router.ts"></script>
-</body>
-
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="src/router.ts"></script>
+  </body>
 </html>
