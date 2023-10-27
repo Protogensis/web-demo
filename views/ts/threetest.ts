@@ -98,21 +98,8 @@ function initControl(
   return control;
 }
 
-function run() {
-  const { canvas, scene, renderer } = initThree();
-  const camera = initCamera();
-
-
-
-  initLight(scene);
-  const { cube, plane, sphere } = initGeometry();
-  const control = initControl(camera, renderer);
-  scene.add(camera);
-
-  scene.add(cube);
-  scene.add(plane);
-  scene.add(sphere);
-
+function initOutlinePass(renderer: THREE.WebGLRenderer, scene: THREE.Scene,
+  camera: THREE.PerspectiveCamera,) {
   const composer = new EffectComposer(renderer);
   const renderPass = new RenderPass(scene, camera);
   composer.addPass(renderPass);
@@ -120,17 +107,35 @@ function run() {
   const v2 = new THREE.Vector2(window.innerWidth, window.innerHeight);
   // const v2 = new THREE.Vector2(800, 600);
   const outlinePass = new OutlinePass(v2, scene, camera);
-  outlinePass.visibleEdgeColor.set(0.01,0.01,0.01);
+  outlinePass.visibleEdgeColor.set(0.01, 0.01, 0.01);
   outlinePass.edgeThickness = 5.0;
-  outlinePass.edgeStrength = 50; 
+  outlinePass.edgeStrength = 50;
 
-  outlinePass.selectedObjects = [cube,sphere]
+
   composer.addPass(outlinePass);
+  return { composer, outlinePass }
+}
+
+function run() {
+  const { canvas, scene, renderer } = initThree();
+  const camera = initCamera();
+
+  initLight(scene);
+  const { cube, plane, sphere } = initGeometry();
+  const control = initControl(camera, renderer);
+  const { composer, outlinePass } = initOutlinePass(renderer, scene, camera)
+
+  outlinePass.selectedObjects = [cube, sphere]
+  scene.add(camera);
+
+  scene.add(cube);
+  scene.add(plane);
+  scene.add(sphere);
+
 
   animate();
 
   function animate() {
-    composer.render();
 
     requestAnimationFrame(animate);
 
@@ -147,7 +152,8 @@ function run() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    composer.setSize(window.innerWidth, window.innerHeight);
+    render()
   });
 }
 
