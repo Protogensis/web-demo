@@ -41,7 +41,7 @@ function initGeometry() {
 
 
     const fillmaterial = new THREE.MeshPhongMaterial({
-        color: new THREE.Color(1, 0.1, 0),
+        color: new THREE.Color(0.1, 0.1, 0.1),
     });
 
     const fillmesh = new THREE.Mesh(fillicogeo, fillmaterial);
@@ -49,7 +49,7 @@ function initGeometry() {
     const lineicogeo = new THREE.IcosahedronGeometry(2.5, 0)
     const geometry = new THREE.WireframeGeometry( lineicogeo );
     const linematerial = new THREE.LineBasicMaterial({
-        color: new THREE.Color(0,1,0),
+        color: new THREE.Color(0.1,0.1,0.1),
         // linewidth: 1, // in pixels
         // //resolution:  // to be set by renderer, eventually
         // dashed: false
@@ -62,7 +62,7 @@ function initGeometry() {
     const cubegeo = new THREE.BoxGeometry(0.3,0.3,0.3)
 
     const cubematerial = new THREE.MeshPhongMaterial({
-        color:new THREE.Color(0.8,0.4,0.4)
+        color:new THREE.Color(0.1,0.1,0.1)
     })
     for(var z = 0;z<10;z++){//10表示z方向立方体数量
         for(var y = 0;y<10;y++){//10表示y方向立方体数量
@@ -86,18 +86,22 @@ function initGeometry() {
 //灯光
 function initLight(scene: THREE.Scene) {
     const amcolor = 0xffffff;
-    const amintensity = 0.5;
+    const amintensity = 10;
     const amlight = new THREE.AmbientLight(amcolor, amintensity);
     scene.add(amlight);
 
     const color = 0xffffff;
-    const intensity = 3;
+    const intensity = 40;
     const light = new THREE.DirectionalLight(color, intensity);
-    light.position.set(40, 100, 40);
+    light.position.set(40, 0, 10);
     scene.add(light);
 
-    const light1 = new THREE.DirectionalLight(0xffffff, 1);
+    const light1 = new THREE.DirectionalLight(0xC71585, 40);
     light1.position.set(-40, -100, 40);
+    scene.add(light1);
+
+    const light2 = new THREE.DirectionalLight(0x00FFFF, 20);
+    light2.position.set(0, 100, -0);
     scene.add(light1);
 }
 
