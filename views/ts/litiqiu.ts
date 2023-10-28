@@ -1,7 +1,9 @@
 import * as THREE from "three";
 
 //线几何
+import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 function initThree() {
     const canvas = document.getElementById("three") as HTMLCanvasElement;
@@ -47,38 +49,38 @@ function initGeometry() {
     const fillmesh = new THREE.Mesh(fillicogeo, fillmaterial);
 
     const lineicogeo = new THREE.IcosahedronGeometry(2.5, 0)
-    const geometry = new THREE.WireframeGeometry( lineicogeo );
+    const geometry = new THREE.WireframeGeometry(lineicogeo);
     const linematerial = new THREE.LineBasicMaterial({
-        color: new THREE.Color(0.1,0.1,0.1),
-        // linewidth: 1, // in pixels
-        // //resolution:  // to be set by renderer, eventually
-        // dashed: false
+        color: new THREE.Color(0.8, 0.4, 0.4),
+        linewidth: 50,
+        linecap: 'round', //ignored by WebGLRenderer
+        linejoin: 'round' //ignored by WebGLRenderer
     })
     const linemesh = new THREE.LineSegments(geometry, linematerial)
     linemesh.computeLineDistances();
 
     // 方阵物体
     const group = new THREE.Group()
-    const cubegeo = new THREE.BoxGeometry(0.3,0.3,0.3)
+    const cubegeo = new THREE.BoxGeometry(0.3, 0.3, 0.3)
 
     const cubematerial = new THREE.MeshPhongMaterial({
-        color:new THREE.Color(0.1,0.1,0.1)
+        color: new THREE.Color(0.1, 0.1, 0.1)
     })
-    for(var z = 0;z<10;z++){//10表示z方向立方体数量
-        for(var y = 0;y<10;y++){//10表示y方向立方体数量
-            for(var x = 0;x<10;x++){//10表示x方向立方体数量
-                var mesh=new THREE.Mesh(cubegeo,cubematerial);//网格模型对象
-                mesh.rotateX(Math.random()*Math.PI)
-                mesh.rotateY(Math.random()*Math.PI)
-                mesh.rotateZ(Math.random()*Math.PI)
-                mesh.position.set(x*10-45,y*10-45,z*10-45);//立方体间距15（阵列距离）
+    for (var z = 0; z < 10; z++) {//10表示z方向立方体数量
+        for (var y = 0; y < 10; y++) {//10表示y方向立方体数量
+            for (var x = 0; x < 10; x++) {//10表示x方向立方体数量
+                var mesh = new THREE.Mesh(cubegeo, cubematerial);//网格模型对象
+                mesh.rotateX(Math.random() * Math.PI)
+                mesh.rotateY(Math.random() * Math.PI)
+                mesh.rotateZ(Math.random() * Math.PI)
+                mesh.position.set(x * 10 - 45, y * 10 - 45, z * 10 - 45);//立方体间距15（阵列距离）
                 group.add(mesh);//网格模型添加到场景中
             }
         }
-    } 
+    }
 
 
-    const meshs = { fillmesh, linemesh ,group};
+    const meshs = { fillmesh, linemesh, group };
 
     return meshs;
 }
@@ -118,7 +120,7 @@ function run() {
     scene.add(camera);
 
 
-    scene.add(meshs.fillmesh, meshs.linemesh,meshs.group);
+    scene.add(meshs.fillmesh, meshs.linemesh, meshs.group);
 
 
     animate();
