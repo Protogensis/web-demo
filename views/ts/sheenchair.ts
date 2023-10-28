@@ -83,6 +83,7 @@ function run() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
+  
   animate();
   function animate() {
     requestAnimationFrame(animate);
