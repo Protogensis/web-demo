@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>滚动视差特效</title>
+    <style>
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            perspective: 2px;
+            transform-style: preserve-3d;
+            transform-origin: center center;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .g-container {
+            position: relative;
+            height: 150vh;
+            transform-style: preserve-3d;
+            font-size: 100px;
+            text-align: center;
+
+
+        }
+
+        .section-one {
+            background: rgba(10, 10, 10, .2);
+            transform: translateZ(-2px);
+        }
+
+        .section-two {
+            background: rgba(30, 130, 30, .2);
+            transform: translateZ(-5px);
+        }
+
+        .section-three {
+            background: rgba(200, 100, 130, .2);
+            transform: translateZ(-10px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="g-container">
+        <div class="section-one">translate1</div>
+    </div>
+    <div class="g-container">
+        <div class="section-two">translate2</div>
+    </div>
+    <div class="g-container">
+        <div class="section-three">translate3</div>
+    </div>
+</body>
+
+</html>
