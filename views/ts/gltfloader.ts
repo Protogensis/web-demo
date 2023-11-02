@@ -86,19 +86,21 @@ function initModel(scene: THREE.Scene) {
         child.layers.set(0)
         if (child.isMesh) {
           child.castShadow = true;
+          console.log(child.material.map)
           set.add(child.material);
         }
       });
+      
 
       for (const iterator of set) {
         if(iterator.name.indexOf('光源')!==-1||iterator.name.indexOf('发光')!==-1){
           const material = new THREE.MeshPhysicalMaterial({
-            emissive:new THREE.Color(1,1,0),
+            emissive:new THREE.Color(1,1,0.1),
             color: iterator.color,
             name: iterator.name,
           });
           map.set(iterator, material);
-          console.log(iterator)
+          
         }else{
           const material = new THREE.MeshPhysicalMaterial({
             color: iterator.color,
@@ -108,6 +110,7 @@ function initModel(scene: THREE.Scene) {
         }
         
       }
+
       gltf.scene.traverse((child) => {
         if (child.isMesh) {
           const material = map.get(child.material);
