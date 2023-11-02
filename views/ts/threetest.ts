@@ -2,7 +2,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
+// import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
 function initThree() {
   const canvas = document.getElementById("three") as HTMLCanvasElement;
@@ -53,6 +54,10 @@ function initGeometry() {
   const plane = new THREE.Mesh(planegeo, graymaterial);
   const sphere = new THREE.Mesh(sgeo, redmaterial);
 
+  cube.layers.set(1);
+  sphere.layers.set(1);
+  plane.layers.set(0);
+
   cube.castShadow = true;
   sphere.castShadow = true;
   plane.receiveShadow = true;
@@ -73,6 +78,7 @@ function initLight(scene: THREE.Scene) {
   const amcolor = 0xffffff;
   const amintensity = 0.5;
   const amlight = new THREE.AmbientLight(amcolor, amintensity);
+  amlight.layers.set(0);
   scene.add(amlight);
 
   const color = 0xffffff;
@@ -82,6 +88,7 @@ function initLight(scene: THREE.Scene) {
   light.castShadow = true;
   light.shadow.mapSize.width = 1024;
   light.shadow.mapSize.height = 1024;
+  light.layers.set(1);
   scene.add(light);
 }
 
@@ -98,22 +105,37 @@ function initControl(
   return control;
 }
 
-function initOutlinePass(renderer: THREE.WebGLRenderer, scene: THREE.Scene,
-  camera: THREE.PerspectiveCamera,) {
+function initPass(
+  renderer: THREE.WebGLRenderer,
+  scene: THREE.Scene,
+  camera: THREE.PerspectiveCamera
+) {
   const composer = new EffectComposer(renderer);
   const renderPass = new RenderPass(scene, camera);
   composer.addPass(renderPass);
-  // OutlinePass第一个参数v2的尺寸和canvas画布保持一致
-  const v2 = new THREE.Vector2(window.innerWidth, window.innerHeight);
-  // const v2 = new THREE.Vector2(800, 600);
-  const outlinePass = new OutlinePass(v2, scene, camera);
-  outlinePass.visibleEdgeColor.set(0.01, 0.01, 0.01);
-  outlinePass.edgeThickness = 5.0;
-  outlinePass.edgeStrength = 50;
 
+  //光晕
 
-  composer.addPass(outlinePass);
-  return { composer, outlinePass }
+  const params = {
+    exposure: 0,
+    bloomStrength: 1.0,
+    bloomThreshold: 0,
+    bloomRadius: 0,
+  };
+
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  bloomPass.threshold = params.bloomThreshold;
+  bloomPass.strength = params.bloomStrength;
+  bloomPass.radius = params.bloomRadius;
+
+  composer.addPass(bloomPass);
+  
+  return { composer };
 }
 
 function run() {
@@ -123,39 +145,45 @@ function run() {
   initLight(scene);
   const { cube, plane, sphere } = initGeometry();
   const control = initControl(camera, renderer);
-  const { composer, outlinePass } = initOutlinePass(renderer, scene, camera)
+  const { composer } = initPass(renderer, scene, camera);
 
-  outlinePass.selectedObjects = [cube, sphere]
+  // outlinePass.selectedObjects = [cube, sphere]
   scene.add(camera);
 
   scene.add(cube);
   scene.add(plane);
   scene.add(sphere);
 
-
   animate();
 
   function animate() {
-
     requestAnimationFrame(animate);
 
     control.update(); // required if damping enabled
+    renderer.autoClear = false;
 
     render();
   }
-
-
 
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    render()
+    render();
   });
 
   function render() {
-    composer.render()
+    renderer.autoClear = false;
+    
+    camera.layers.set(0);
+    composer.render();
+
+
+    // camera.layers.set(1)
+    // renderer.render(scene,camera);
+    // camera.layers.set(0)
+    // composer.render();
   }
 }
 

@@ -3,6 +3,18 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+
+
+const params = {
+  exposure: 0,
+  bloomStrength: 1.5,
+  bloomThreshold: 0,
+  bloomRadius: 0,
+};
+
 function initThree() {
   const canvas = document.getElementById("three") as HTMLCanvasElement;
   const scene = new THREE.Scene();
@@ -35,42 +47,29 @@ function initCamera(scene: THREE.Scene) {
 function initLight(scene: THREE.Scene) {
   // LIGHTS
 
-  const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 2 );
-  hemiLight.color.setHSL( 0.6, 1, 0.6 );
-  hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
-  hemiLight.position.set( 0, 50, 0 );
-  scene.add( hemiLight );
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 2);
+  hemiLight.color.setHSL(0.6, 1, 0.6);
+  hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+  hemiLight.position.set(0, 50, 0);
+  hemiLight.layers.set(0)
+  scene.add(hemiLight);
 
-  const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 2 );
-  scene.add( hemiLightHelper );
+  const hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 2);
+  scene.add(hemiLightHelper);
 
   //
 
-  const dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
-  dirLight.color.setHSL( 0.1, 1, 0.95 );
-  dirLight.position.set( - 1, 1.75, 1 );
-  dirLight.position.multiplyScalar( 30 );
-  scene.add( dirLight );
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  dirLight.color.setHSL(0.1, 1, 0.95);
+  dirLight.position.set(-1, 1.75, 1);
+  dirLight.position.multiplyScalar(30);
+  scene.add(dirLight);
 
   dirLight.castShadow = true;
+  scene.add(dirLight)
 
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
 
-  const d = 50;
 
-  dirLight.shadow.camera.left = - d;
-  dirLight.shadow.camera.right = d;
-  dirLight.shadow.camera.top = d;
-  dirLight.shadow.camera.bottom = - d;
-
-  dirLight.shadow.camera.far = 3500;
-  dirLight.shadow.bias = - 0.0001;
-
-  const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 2 );
-  scene.add( dirLightHelper );
-
-  
 }
 
 // model
@@ -85,6 +84,7 @@ function initModel(scene: THREE.Scene) {
         THREE.MeshPhongMaterial
       >();
       gltf.scene.traverse((child) => {
+        child.layers.set(0)
         if (child.isMesh) {
           child.castShadow = true;
           set.add(child.material);
@@ -94,18 +94,25 @@ function initModel(scene: THREE.Scene) {
       for (const iterator of set) {
         const material = new THREE.MeshToonMaterial({
           color: iterator.color,
+          name: iterator.name,
         });
         map.set(iterator, material);
       }
       gltf.scene.traverse((child) => {
         if (child.isMesh) {
           const material = map.get(child.material);
+
           child.material = material;
+
+          if (material?.name.indexOf("光源") !== -1) {
+            console.log(material?.name);
+          }
         }
       });
       gltf.scene.traverse((child) => {
-        if (child.isMesh) {
-          console.log(child);
+        if (child.type === "Object3D") {
+          child.castShadow = true;
+          // console.log(child)
         }
       });
     });
@@ -121,12 +128,34 @@ function initControl(camera: THREE.Camera, renderer: THREE.WebGLRenderer) {
   return control;
 }
 
+function initComposer(renderer:any,scene:any,camera:any) {
+  const composer = new EffectComposer(renderer);
+
+  const renderScene = new RenderPass(scene, camera);
+  // 光晕
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  bloomPass.threshold = params.bloomThreshold;
+  bloomPass.strength = params.bloomStrength;
+  bloomPass.radius = params.bloomRadius;
+  composer.addPass(renderScene);
+  composer.addPass(bloomPass);
+  return composer
+}
+
 function run() {
   const { scene, renderer } = initThree();
   const camera = initCamera(scene);
   initModel(scene);
   initLight(scene);
   const control = initControl(camera, renderer);
+
+  const composer = initComposer(renderer,scene,camera)
+
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -144,7 +173,7 @@ function run() {
   }
 
   function render() {
-    renderer.render(scene, camera);
+    composer.render();
   }
 }
 
