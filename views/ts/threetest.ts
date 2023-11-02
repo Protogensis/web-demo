@@ -41,9 +41,11 @@ function initGeometry() {
   const sgeo = new THREE.SphereGeometry(0.5);
 
   const greenmaterial = new THREE.MeshToonMaterial({
+    
     color: 0x44aa88,
   });
-  const redmaterial = new THREE.MeshToonMaterial({
+  const redmaterial = new THREE.MeshPhysicalMaterial({
+    emissive:new THREE.Color(1,1,0),
     color: new THREE.Color(1, 0.1, 0),
   });
   const graymaterial = new THREE.MeshToonMaterial({
@@ -56,7 +58,7 @@ function initGeometry() {
 
   cube.layers.set(1);
   sphere.layers.set(1);
-  plane.layers.set(0);
+  plane.layers.set(1);
 
   cube.castShadow = true;
   sphere.castShadow = true;
@@ -78,7 +80,7 @@ function initLight(scene: THREE.Scene) {
   const amcolor = 0xffffff;
   const amintensity = 0.5;
   const amlight = new THREE.AmbientLight(amcolor, amintensity);
-  amlight.layers.set(0);
+  amlight.layers.set(1);
   scene.add(amlight);
 
   const color = 0xffffff;
@@ -133,7 +135,7 @@ function initPass(
   bloomPass.strength = params.bloomStrength;
   bloomPass.radius = params.bloomRadius;
 
-  composer.addPass(bloomPass);
+  // composer.addPass(bloomPass);
   
   return { composer };
 }
@@ -176,14 +178,10 @@ function run() {
   function render() {
     renderer.autoClear = false;
     
-    camera.layers.set(0);
+    camera.layers.set(1);
     composer.render();
 
 
-    // camera.layers.set(1)
-    // renderer.render(scene,camera);
-    // camera.layers.set(0)
-    // composer.render();
   }
 }
 

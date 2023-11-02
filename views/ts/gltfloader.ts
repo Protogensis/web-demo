@@ -49,7 +49,6 @@ function initLight(scene: THREE.Scene) {
 
   const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 2);
   hemiLight.color.setHSL(0.6, 1, 0.6);
-  hemiLight.groundColor.setHSL(0.095, 1, 0.75);
   hemiLight.position.set(0, 50, 0);
   hemiLight.layers.set(0)
   scene.add(hemiLight);
@@ -92,11 +91,22 @@ function initModel(scene: THREE.Scene) {
       });
 
       for (const iterator of set) {
-        const material = new THREE.MeshToonMaterial({
-          color: iterator.color,
-          name: iterator.name,
-        });
-        map.set(iterator, material);
+        if(iterator.name.indexOf('光源')!==-1||iterator.name.indexOf('发光')!==-1){
+          const material = new THREE.MeshPhysicalMaterial({
+            emissive:new THREE.Color(1,1,0),
+            color: iterator.color,
+            name: iterator.name,
+          });
+          map.set(iterator, material);
+          console.log(iterator)
+        }else{
+          const material = new THREE.MeshPhysicalMaterial({
+            color: iterator.color,
+            name: iterator.name,
+          });
+          map.set(iterator, material);
+        }
+        
       }
       gltf.scene.traverse((child) => {
         if (child.isMesh) {
@@ -105,7 +115,6 @@ function initModel(scene: THREE.Scene) {
           child.material = material;
 
           if (material?.name.indexOf("光源") !== -1) {
-            console.log(material?.name);
           }
         }
       });
@@ -143,7 +152,7 @@ function initComposer(renderer:any,scene:any,camera:any) {
   bloomPass.strength = params.bloomStrength;
   bloomPass.radius = params.bloomRadius;
   composer.addPass(renderScene);
-  composer.addPass(bloomPass);
+  // composer.addPass(bloomPass);
   return composer
 }
 
