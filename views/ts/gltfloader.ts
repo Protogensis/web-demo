@@ -6,6 +6,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
+import { LineSegmentsGeometry } from "three/examples/jsm/lines/LineSegmentsGeometry.js";
+import { LineSegments2 } from "three/examples/jsm/lines/LineSegments2.js";
+import { LineBasicMaterial, LineSegments } from "three";
 
 
 const params = {
@@ -45,7 +49,6 @@ function initCamera(scene: THREE.Scene) {
 
 // 光源
 function initLight(scene: THREE.Scene) {
-  // LIGHTS
 
   const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 2);
   hemiLight.color.setHSL(0.6, 1, 0.6);
@@ -86,29 +89,30 @@ function initModel(scene: THREE.Scene) {
         child.layers.set(0)
         if (child.isMesh) {
           child.castShadow = true;
-          console.log(child.material.map)
           set.add(child.material);
         }
       });
-      
+
 
       for (const iterator of set) {
-        if(iterator.name.indexOf('光源')!==-1||iterator.name.indexOf('发光')!==-1){
+
+        if (iterator.name.indexOf('光源') !== -1 || iterator.name.indexOf('发光') !== -1) {
           const material = new THREE.MeshPhysicalMaterial({
-            emissive:new THREE.Color(1,1,0.1),
+            emissive: new THREE.Color(1, 1, 0.1),
             color: iterator.color,
             name: iterator.name,
           });
           map.set(iterator, material);
-          
-        }else{
-          const material = new THREE.MeshPhysicalMaterial({
+
+        } else {
+          const material = new THREE.MeshToonMaterial({
             color: iterator.color,
             name: iterator.name,
+            map: iterator.map
           });
           map.set(iterator, material);
         }
-        
+
       }
 
       gltf.scene.traverse((child) => {
@@ -117,14 +121,19 @@ function initModel(scene: THREE.Scene) {
 
           child.material = material;
 
-          if (material?.name.indexOf("光源") !== -1) {
-          }
+
         }
       });
+      const data = new Array()
+      const edgeMaterial = new LineBasicMaterial({ color: 0x000000, linewidth: 1 });
       gltf.scene.traverse((child) => {
-        if (child.type === "Object3D") {
-          child.castShadow = true;
-          // console.log(child)
+        if (child.type === "Mesh") {
+          
+          const mesh = child as THREE.Mesh
+          var edges = new THREE.EdgesGeometry(mesh.geometry,45);
+          
+          var line = new LineSegments(edges, edgeMaterial);
+          mesh.add(line);
         }
       });
     });
@@ -140,7 +149,7 @@ function initControl(camera: THREE.Camera, renderer: THREE.WebGLRenderer) {
   return control;
 }
 
-function initComposer(renderer:any,scene:any,camera:any) {
+function initComposer(renderer: any, scene: any, camera: any) {
   const composer = new EffectComposer(renderer);
 
   const renderScene = new RenderPass(scene, camera);
@@ -166,7 +175,7 @@ function run() {
   initLight(scene);
   const control = initControl(camera, renderer);
 
-  const composer = initComposer(renderer,scene,camera)
+  const composer = initComposer(renderer, scene, camera)
 
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;
