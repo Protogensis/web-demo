@@ -46,15 +46,15 @@ function onHashChange () {
     const re = location.hash
     switch (location.hash) {
         case '':
-            iframe.src = '../views/' + 'helloweb' + '.html'
+            iframe.src = 'https://gitee.com/protogensis/web-demo/raw/dev'+'/views/' + 'helloweb' + '.html'
             return
         
             case '#':
-            iframe.src = '../views/' + 'helloweb' + '.html'
+            iframe.src = 'https://gitee.com/protogensis/web-demo/raw/dev'+'/views/' + 'helloweb' + '.html'
             return
        
         default:
-            iframe.src = '../views/' + re.split('#')[1] + '.html'
+            iframe.src = 'https://gitee.com/protogensis/web-demo/raw/dev'+'/views/' + re.split('#')[1] + '.html'
             return
 }
 }
