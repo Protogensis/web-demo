@@ -4,6 +4,6 @@ export default defineConfig({
   base:'./',
   
   preview: {
-    port: 8080
+    port: 8080,
   },
 })
