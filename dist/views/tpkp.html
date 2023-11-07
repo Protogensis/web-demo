@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(210, 210, 210);
+
+        }
+
+        .card{
+            width: 200px;
+            margin: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            filter: drop-shadow(0 0 0.75rem rgb(99, 99, 99));
+            transform:perspective(30cm) rotate3d(1,0,0,60deg);
+
+            transition: all 0.3s linear;
+        }
+
+        .card:hover{
+            transform:rotate3d(0,0,0,90deg);
+        }
+
+        header{
+            background-color: aquamarine; 
+            padding: 20px;
+            text-align: center;
+        }
+        p{
+            background-color: white;
+            width: 100%;
+            height: 200px;
+            padding: 20px;
+            text-align: center;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div class="card">
+        <header>
+            <h1>编码</h1>
+        </header>
+        <p>任何时候</p>
+    </div>
+    <div class="card">
+        <header>
+            <h1>成长</h1>
+        </header>
+        <p>任何时候</p>
+    </div>
+    <div class="card">
+        <header>
+            <h1>设计</h1>
+        </header>
+        <p>任何时候</p>
+    </div>
+  </body>
+</html>
