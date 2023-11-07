@@ -19,13 +19,37 @@ aside{
   display: flex;
   flex-direction: column;
   justify-content: left;
-  resize:horizontal;
   overflow-y: scroll;
   min-width: 250px;
   max-width: 350px;
 }
 
+.resize {
+  width: 200px;
+  height: 20px;
+  transform: scaleY(100);
+  /* background-color: cadetblue; */
+  overflow: scroll;
+  resize: horizontal;
+  opacity: 0;
+}
 
+.line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  bottom: 0;
+  background-color: royalblue;
+  opacity: 0;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.resize:hover + .line,
+.resize:active + .line {
+  opacity: 1;
+}
 
 
 hr{
