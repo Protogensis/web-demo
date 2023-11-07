@@ -19,8 +19,12 @@ aside{
   display: flex;
   flex-direction: column;
   justify-content: left;
+  resize:horizontal;
   overflow-y: scroll;
 }
+
+
+
 
 hr{
   position: relative;
@@ -92,4 +96,11 @@ a:hover{
 
 a:visited{
   color: black;
+}
+
+input#search{
+  margin: 10px 10px 0 10px;
+  padding: 5px;
+  border: solid black ;
+  border-radius: 10px;
 }
