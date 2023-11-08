@@ -46,15 +46,15 @@ function onHashChange () {
     const re = location.hash
     switch (location.hash) {
         case '':
-            iframe.src = './web-demo/views/' + 'helloweb' + '.html'
+            iframe.src = './views/' + 'helloweb' + '.html'
             return
         
             case '#':
-            iframe.src = './web-demo/views/' + 'helloweb' + '.html'
+            iframe.src = './views/' + 'helloweb' + '.html'
             return
        
         default:
-            iframe.src = './web-demo/views/' + re.split('#')[1] + '.html'
+            iframe.src = './views/' + re.split('#')[1] + '.html'
             return
 }
 }
