@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>打字机特效</title>
+    <style>
+        body{
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        h1{
+            font-family: monospace;
+            font-size: 8rem;
+            width: 1ch;
+            overflow: hidden;
+            animation: 2s typing steps(6,jump-none) forwards;
+            
+        }
+
+
+        @keyframes typing{
+            from{
+                width: 1ch;
+            }
+            to{
+                width: 6ch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Coding</h1>
+</body>
+</html>
