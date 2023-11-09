@@ -23,7 +23,6 @@ for(let sample of samples){
 
 // 路由变化时，根据路由渲染对应 UI
 function onHashChange () {
-    console.log(location.hash)
 
     const samples = document.querySelectorAll('.sample')
     for(let sample of samples){
