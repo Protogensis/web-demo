@@ -46,7 +46,7 @@ function initModel(scene: THREE.Scene) {
   // model
 
   new GLTFLoader()
-    .setPath("/public/models/gltf/")
+    .setPath("/models/gltf/")
     .load("SheenChair.glb", function (gltf) {
       scene.add(gltf.scene);
 
