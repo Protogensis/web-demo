@@ -1,6 +1,5 @@
 <script>
-    import * as threetest from './ts/threetest.ts'
-    import onM from 'vue'
+    // import * as threetest from './ts/threetest.ts'
 </script>
 
 
