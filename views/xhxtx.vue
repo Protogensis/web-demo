@@ -1,0 +1,57 @@
+<template>
+    <div>
+        <p>主页</p>
+        <p>关于</p>
+    </div>
+</template>
+
+<style scoped>
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+    transition: all 0.6s linear;
+
+}
+
+p::after {
+    content: '';
+    display: block;
+    position: relative;
+    width: 0;
+    height: 5px;
+    top: 0;
+    left: 0;
+    border-bottom: 3px solid #000;
+    transition: all 0.6s linear;
+}
+
+p:hover::after {
+    width: 100%;
+    transition: all 0.6s linear;
+
+}
+</style>

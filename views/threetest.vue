@@ -1,0 +1,19 @@
+<script></script>
+
+
+<template>
+    <canvas id="three"></canvas>
+</template>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    canvas{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+    }
+</style>
