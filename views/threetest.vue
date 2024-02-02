@@ -1,4 +1,7 @@
-<script></script>
+<script>
+    import * as threetest from './ts/threetest.ts'
+    import onM from 'vue'
+</script>
 
 
 <template>
@@ -6,14 +9,4 @@
 </template>
 
 <style>
-    *{
-        margin: 0;
-        padding: 0;
-    }
-
-    canvas{
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-    }
 </style>

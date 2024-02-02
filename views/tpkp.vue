@@ -19,7 +19,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
@@ -33,7 +33,6 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: rgb(210, 210, 210);
 
 }
 

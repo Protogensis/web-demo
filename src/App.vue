@@ -8,12 +8,12 @@ import Aside from './components/Asdie.vue'
   </div>
 </template>
 
-<style scoped>
+<style>
 .container{
   display: flex;
   flex-direction: row;
   justify-content: start;
-  width: 1000px;
+  width: 1500px;
 }
 
 .side{
@@ -22,14 +22,5 @@ import Aside from './components/Asdie.vue'
 }
 
 
-.routerview{
-  flex-grow: 1;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(80, 80, 80);
-}
 
 </style>

@@ -21,21 +21,7 @@
 </template>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-}
 
-body {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    background-color: black;
-}
 
 .svgcontent {
     display: flex;
