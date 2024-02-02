@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# npm
+package-lock.json
+
+# bun
+bun.lockb
+
+# yarn
+yarn.lock
