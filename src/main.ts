@@ -1,33 +1,14 @@
+import { createApp } from 'vue'
+import * as VueRouter from 'vue-router'
+import App from './App.vue'
+import routes from './routes'
 
-
-//给搜索框添加输入事件
-let search = document.getElementById('search') as HTMLInputElement
-
-//获取所有的sampleclass 元素
-let samplelist = document.getElementsByClassName('sample')
-
-
-
-search.addEventListener('input',()=>{
-    let inputvalue = search.value
-
-
-    if(inputvalue == ''){
-        for (const iterator of samplelist) {
-            let e = iterator as HTMLAnchorElement
-                e.style.display = 'block'
-        }
-        console.log(inputvalue)
-        return
-    }
-
-    for (const iterator of samplelist) {
-        let e = iterator as HTMLAnchorElement
-        if(e.innerText.indexOf(inputvalue) === -1){
-            e.style.display = 'none'
-        }else{
-            e.style.display = 'block'
-
-        }
-    }
+const app = createApp(App)
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHashHistory(),
+  routes, // `routes: routes` 的缩写
 })
+
+app.use(router)
+
+app.mount('#app')
